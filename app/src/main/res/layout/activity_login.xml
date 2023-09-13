@@ -23,7 +23,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email" />
+            android:hint="@string/email" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +44,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password" />
+            android:hint="@string/password" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,7 +55,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Login"
+        android:text="@string/login"
         app:layout_constraintTop_toBottomOf="@id/password_login" />
 
     <TextView
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:text="Forgot Password"
+        android:text="@string/forgot_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Don't have an account?"
+        android:text="@string/don_t_have_an_account"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_forgotPassword" />
 
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
-        android:text="Create Account"
+        android:text="@string/create_account"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/txt_dontHaveAccount"
         app:layout_constraintTop_toBottomOf="@id/txt_forgotPassword" />
@@ -109,7 +109,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:src="@drawable/ic_google" />
+            android:src="@drawable/ic_google"
+            android:contentDescription="@string/google_login" />
 
     </androidx.cardview.widget.CardView>
 
@@ -130,7 +131,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:src="@drawable/ic_phone" />
+            android:src="@drawable/ic_phone"
+            android:contentDescription="@string/mobile_login" />
 
     </androidx.cardview.widget.CardView>
 

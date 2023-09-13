@@ -22,7 +22,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="@string/name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,7 +42,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"/>
+            android:hint="@string/email"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +63,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"/>
+            android:hint="@string/password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +84,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Conform Password"/>
+            android:hint="@string/conform_password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,14 +95,14 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Signup"
+        android:text="@string/signup"
         app:layout_constraintTop_toBottomOf="@id/conformPass_signup"/>
 
     <TextView
         android:id="@+id/txt_haveAnAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Already have an account?"
+        android:text="@string/already_have_an_account"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         app:layout_constraintTop_toBottomOf="@id/btn_signup"
@@ -111,7 +111,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         android:layout_marginStart="5dp"

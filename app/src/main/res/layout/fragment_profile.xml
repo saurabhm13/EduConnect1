@@ -20,7 +20,7 @@
             style="@style/PrimaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile"
+            android:text="@string/profile"
             android:layout_marginEnd="20dp"
             android:textAlignment="center" />
 
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:text="@string/logout"
         android:textColor="@color/darkRed"
-        android:background="@drawable/logout_bg"
+        android:background="@drawable/bg_logout_btn"
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:paddingStart="20dp"

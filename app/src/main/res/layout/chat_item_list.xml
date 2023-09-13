@@ -22,7 +22,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
         android:maxLines="1"
-        android:text="Name"
+        android:text="@string/name"
         app:layout_constraintBottom_toTopOf="@+id/message"
         app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toEndOf="@id/profile_image"
@@ -36,7 +36,7 @@
         android:layout_marginStart="5dp"
         android:maxLines="1"
         android:layout_marginEnd="10dp"
-        android:text="This is a message for that user"
+        android:text="@string/message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/read_status"
@@ -61,6 +61,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        android:contentDescription="Read Status" />
+        android:contentDescription="@string/read_status" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
