@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/video_img"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:src="@color/material_dynamic_secondary30"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/FeatureImageBg" />
+
+            <TextView
+                android:id="@+id/video_title"
+                style="@style/SecondaryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:lines="1"
+                android:text="Title"
+                app:layout_constraintStart_toStartOf="@id/video_img"
+                app:layout_constraintTop_toBottomOf="@id/video_img"
+                app:layout_constraintEnd_toStartOf="@id/video_pub_date"/>
+
+            <TextView
+                android:id="@+id/video_description"
+                style="@style/TertiaryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="3dp"
+                android:maxLines="3"
+                android:text="saurabhdsfjshdbfjm13"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/video_title"
+                app:layout_constraintStart_toStartOf="@id/video_img"/>
+
+            <TextView
+                android:id="@+id/video_pub_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01.8.2023"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/video_img"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
