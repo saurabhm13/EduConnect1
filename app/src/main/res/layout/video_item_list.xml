@@ -26,7 +26,7 @@
                 android:src="@color/material_dynamic_secondary30"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/FeatureImageBg" />
+                app:shapeAppearanceOverlay="@style/FeatureImageShape" />
 
             <TextView
                 android:id="@+id/video_title"

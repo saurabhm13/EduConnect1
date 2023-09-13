@@ -5,11 +5,10 @@
 
     <color name="gray">#919191</color>
 
-    <color name="background">#D6D6D6</color>
-    <color name="blue">#1376C1</color>
+    <color name="background">#494949</color>
     <color name="red">#FF7B7B</color>
     <color name="darkRed">#660000</color>
 
-    <color name="sendMessage">#97EFDB</color>
-    <color name="receiveMessage">#E5E6E8</color>
+    <color name="sendMessage">#496962</color>
+    <color name="receiveMessage">#404040</color>
 </resources>
