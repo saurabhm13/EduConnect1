@@ -30,4 +30,5 @@
     <string name="google_login">Google Login</string>
     <string name="mobile_login">Mobile Login</string>
     <string name="article_image">Article Image</string>
+    <string name="chat">Chat</string>
 </resources>

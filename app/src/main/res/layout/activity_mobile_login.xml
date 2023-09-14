@@ -17,13 +17,13 @@
         app:ccp_showFlag="false"
         app:ccp_showFullName="false"
         app:ccp_showNameCode="false"
-        app:layout_constraintTop_toTopOf="@id/mobile_login"
-        app:layout_constraintBottom_toBottomOf="@id/mobile_login"
+        app:layout_constraintTop_toTopOf="@id/phoneNo"
+        app:layout_constraintBottom_toBottomOf="@id/phoneNo"
         app:layout_constraintStart_toStartOf="parent">
     </com.hbb20.CountryCodePicker>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mobile_login"
+        android:id="@+id/phoneNo"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mobile_otp_login"
+        android:id="@+id/otp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/country_code"
-        app:layout_constraintTop_toBottomOf="@id/mobile_login"
+        app:layout_constraintTop_toBottomOf="@id/phoneNo"
         app:startIconDrawable="@drawable/ic_password"
         >
 
@@ -67,14 +67,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btn_mobile_login"
+        android:id="@+id/btn_phone_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:text="@string/login"
-        app:layout_constraintTop_toBottomOf="@id/mobile_otp_login" />
+        app:layout_constraintTop_toBottomOf="@id/otp" />
 
     <TextView
         android:id="@+id/txt_haveAnAccount_mobile_login"
@@ -83,7 +83,7 @@
         android:text="@string/already_have_an_account"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_mobile_login"
+        app:layout_constraintTop_toBottomOf="@id/btn_phone_login"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
@@ -94,7 +94,7 @@
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         android:layout_marginStart="5dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_mobile_login"
+        app:layout_constraintTop_toBottomOf="@id/btn_phone_login"
         app:layout_constraintStart_toEndOf="@id/txt_haveAnAccount_mobile_login"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

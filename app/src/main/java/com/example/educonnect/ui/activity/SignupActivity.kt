@@ -3,11 +3,15 @@ package com.example.educonnect.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.example.educonnect.databinding.ActivitySignupBinding
+import com.example.educonnect.ui.viewmodel.LoginSignupViewModel
 
 class SignupActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySignupBinding
+
+    private val viewModel: LoginSignupViewModel by viewModels()
 
     var name: String? = null
     var email: String? = null
@@ -29,6 +33,13 @@ class SignupActivity : AppCompatActivity() {
             email = binding.emailSignup.editText?.text.toString()
             password = binding.passwordSignup.editText?.text.toString()
             conformPassword = binding.conformPassSignup.editText?.text.toString()
+
+            viewModel.registerUser(email!!, password!!, name!!)
+            viewModel.authCallback = {
+                val intoMain = Intent(this, MainActivity::class.java)
+                startActivity(intoMain)
+                finish()
+            }
         }
 
 

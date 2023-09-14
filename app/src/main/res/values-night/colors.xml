@@ -12,4 +12,10 @@
 
     <color name="sendMessage">#496962</color>
     <color name="receiveMessage">#404040</color>
+
+    // Menu colors
+    <color name="home_color">#F1A5A5</color>
+    <color name="chat_color">#87EAC7</color>
+    <color name="Profile_color">#C388F8</color>
+
 </resources>
