@@ -57,6 +57,7 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup_List"
+                    style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -73,8 +74,8 @@
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:fontFamily="@font/alegreya_sc"
-                        android:text="Articles"
+                        android:textAppearance="@style/TertiaryText"
+                        android:text="@string/articles"
                         android:textAlignment="center" />
 
                     <com.google.android.material.chip.Chip
@@ -83,7 +84,7 @@
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:text="@string/videos"
-                        android:fontFamily="@font/alegreya_sc"
+                        android:textAppearance="@style/TertiaryText"
                         android:textAlignment="center" />
 
                     <com.google.android.material.chip.Chip
@@ -91,7 +92,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/alegreya_sc"
+                        android:textAppearance="@style/TertiaryText"
                         android:text="@string/study_materials"
                         android:textAlignment="center" />
 

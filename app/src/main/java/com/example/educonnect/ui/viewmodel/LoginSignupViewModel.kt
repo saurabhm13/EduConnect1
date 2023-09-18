@@ -16,7 +16,7 @@ import kotlin.math.log
 
 class LoginSignupViewModel(): ViewModel() {
 
-    val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().reference
     private lateinit var verificationId: String
 

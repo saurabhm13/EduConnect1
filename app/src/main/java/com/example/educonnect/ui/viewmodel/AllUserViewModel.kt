@@ -11,18 +11,23 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class MainViewModel(): ViewModel() {
+class AllUserViewModel(): ViewModel() {
 
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance()
+//    lateinit var database: FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
 
-    private var userChatLiveData = MutableLiveData<List<UserChats>>()
+    private var allUserLiveData = MutableLiveData<List<UserChats>>()
 
-    private val userId = auth.currentUser?.uid
+    private val currentUser = auth.currentUser?.uid
 
-    fun getUserChat() {
-        databaseReference = userId?.let { database.getReference("users").child(it).child("chats") }!!
+    init {
+        getAllUser()
+    }
+
+    private fun getAllUser() {
+        databaseReference = database.getReference("users")
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -30,13 +35,16 @@ class MainViewModel(): ViewModel() {
                 val userList = mutableListOf<UserChats>()
                 for (dataSnapshot in snapshot.children) {
 
-                    val user = dataSnapshot.getValue(UserChats::class.java)
-                    user?.let {
-                        userList.add(user)
+                    if (dataSnapshot.key != currentUser) {
+                        val user = dataSnapshot.getValue(UserChats::class.java)
+                        user?.let {
+                            userList.add(user)
+                        }
                     }
+
                 }
 
-                userChatLiveData.value = userList
+                allUserLiveData.value = userList
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -46,8 +54,8 @@ class MainViewModel(): ViewModel() {
         })
     }
 
-    fun observeUserChatsLiveData(): LiveData<List<UserChats>> {
-        return userChatLiveData
+    fun observeAllUserLiveData(): LiveData<List<UserChats>> {
+        return allUserLiveData
     }
 
 }

@@ -23,7 +23,7 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.txtHaveAnAccount.setOnClickListener {
+        binding.txtLogin.setOnClickListener {
             val intoLogin = Intent(this, LoginActivity::class.java)
             startActivity(intoLogin)
         }
