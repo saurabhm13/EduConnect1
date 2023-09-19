@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
+        android:paddingTop="20dp"
         android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +35,7 @@
                 android:id="@+id/profile_image_singleChat"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:scaleType="centerCrop"
                 android:src="@color/material_dynamic_secondary30"
                 android:layout_marginStart="5dp"
                 app:shapeAppearanceOverlay="@style/ProfileImageShape"
@@ -59,6 +60,7 @@
     </Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -85,14 +87,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_send"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="Message" />
+        android:autofillHints="Message"
+        android:inputType="text" />
 
     <ImageView
         android:id="@+id/btn_send"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_send"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="10dp"
         android:paddingStart="9dp"
         android:paddingEnd="6dp"
         android:background="@drawable/bg_send_btn"

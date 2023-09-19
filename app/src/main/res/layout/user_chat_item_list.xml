@@ -18,14 +18,13 @@
     <TextView
         android:id="@+id/name"
         style="@style/SecondaryText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
         android:maxLines="1"
         android:text="@string/name"
         app:layout_constraintBottom_toTopOf="@+id/message"
-        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toEndOf="@id/profile_image"
         app:layout_constraintTop_toTopOf="parent" />
 

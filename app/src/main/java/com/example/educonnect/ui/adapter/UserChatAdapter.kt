@@ -37,7 +37,7 @@ class UserChatAdapter(
 
     override fun onBindViewHolder(holder: UserChatViewHolder, position: Int) {
 
-        if (!userChatsList[position].image.isNullOrEmpty()) {
+        if (!userChatsList[position].image.isNullOrEmpty() && !userChatsList[position].image.equals("null")) {
             Glide.with(holder.itemView)
                 .load(userChatsList[position].image)
                 .into(holder.binding.profileImage)
