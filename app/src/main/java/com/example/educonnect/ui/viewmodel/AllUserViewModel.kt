@@ -15,14 +15,15 @@ class AllUserViewModel(): ViewModel() {
 
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance()
-//    lateinit var database: FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
 
     private var allUserLiveData = MutableLiveData<List<UserChats>>()
 
     private val currentUser = auth.currentUser?.uid
+    val userChatList = mutableListOf<UserChats>()
 
     init {
+        getChattingUsers()
         getAllUser()
     }
 
@@ -35,7 +36,7 @@ class AllUserViewModel(): ViewModel() {
                 val userList = mutableListOf<UserChats>()
                 for (dataSnapshot in snapshot.children) {
 
-                    if (dataSnapshot.key != currentUser) {
+                    if (dataSnapshot.key != currentUser && !userChatList.any {it.userId == dataSnapshot.key}) {
                         val user = dataSnapshot.getValue(UserChats::class.java)
                         user?.let {
                             userList.add(user)
@@ -52,6 +53,33 @@ class AllUserViewModel(): ViewModel() {
             }
 
         })
+    }
+
+    private fun getChattingUsers() {
+        databaseReference = database.getReference("users")
+
+        if (currentUser != null) {
+            database.getReference("users").child(currentUser).child("chats")
+                .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+
+                    for (dataSnapshot in snapshot.children) {
+                        val user = dataSnapshot.getValue(UserChats::class.java)
+                        user?.let {
+                            userChatList.add(user)
+                        }
+                    }
+
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
     }
 
     fun observeAllUserLiveData(): LiveData<List<UserChats>> {

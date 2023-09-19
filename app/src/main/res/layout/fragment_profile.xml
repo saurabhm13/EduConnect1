@@ -30,7 +30,6 @@
         android:id="@+id/profile_image_profile"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@color/material_dynamic_secondary30"
         app:shapeAppearanceOverlay="@style/ProfileImageShape"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"

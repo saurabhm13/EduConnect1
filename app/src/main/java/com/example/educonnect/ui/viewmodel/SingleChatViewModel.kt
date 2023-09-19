@@ -9,7 +9,6 @@ import com.example.educonnect.data.UserChats
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
@@ -24,19 +23,29 @@ class SingleChatViewModel(): ViewModel() {
 
     private val senderId = auth.currentUser?.uid
 
+    private var senderImage: String? = null
+    private lateinit var senderName: String
+
+    init {
+        getSenderData()
+    }
+
     fun sendMessage(message: String, receiverId: String, receiverName: String, receiverImage: String) {
 
         val senderRoom = senderId+receiverId
         val receiverRoom = receiverId+senderId
 
         val sendMessageData = Message(message, getTime(), senderId)
-        val latestMessageData = UserChats(receiverId, receiverName, receiverImage, getDate(), message)
+        val senderSideMessageUpdate = UserChats(receiverId, receiverName, receiverImage, getDate(), message)
+        val receiverSideMessageUpdate =
+            senderId?.let { UserChats(it, senderName, senderImage, getDate(), message) }
 
         database.child("chats").child(senderRoom).push().setValue(sendMessageData)
         database.child("chats").child(receiverRoom).push().setValue(sendMessageData)
 
         if (senderId != null) {
-            database.child("users").child(senderId).child("chats").child(receiverId).setValue(latestMessageData)
+            database.child("users").child(senderId).child("chats").child(receiverId).setValue(senderSideMessageUpdate)
+            database.child("users").child(receiverId).child("chats").child(senderId).setValue(receiverSideMessageUpdate)
         }
 
     }
@@ -69,10 +78,32 @@ class SingleChatViewModel(): ViewModel() {
         return messageLiveData
     }
 
+    private fun getSenderData() {
+        if (senderId != null) {
+            database.child("users").child(senderId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    senderImage = if (snapshot.hasChild("image")) {
+                        snapshot.child("image").value as String
+                    }else {
+                        null
+                    }
+
+                    senderName = snapshot.child("name").value as String
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+    }
+
     @SuppressLint("SimpleDateFormat")
     fun getDate(): String {
         val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val formatter = SimpleDateFormat("dd-MM-yy")
         return formatter.format(time)
     }
 

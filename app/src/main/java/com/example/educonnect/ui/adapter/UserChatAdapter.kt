@@ -51,16 +51,16 @@ class UserChatAdapter(
         holder.binding.date.text = userChatsList[position].timeStamp
         holder.binding.message.text = userChatsList[position].lastMessage
 
-        if (userChatsList[position].status == SEND) {
-            holder.binding.readStatus.setImageResource(R.drawable.ic_single_done)
-            holder.binding.readStatus.setColorFilter(R.color.gray)
-        }else if (userChatsList[position].status == REACHED) {
-            holder.binding.readStatus.setImageResource(R.drawable.ic_double_check)
-            holder.binding.readStatus.setColorFilter(R.color.gray)
-        }else if (userChatsList[position].status == SEEN) {
-            holder.binding.readStatus.setImageResource(R.drawable.ic_double_check)
-            holder.binding.readStatus.setColorFilter(R.color.blue)
-        }
+//        if (userChatsList[position].status == SEND) {
+//            holder.binding.readStatus.setImageResource(R.drawable.ic_single_done)
+//            holder.binding.readStatus.setColorFilter(R.color.gray)
+//        }else if (userChatsList[position].status == REACHED) {
+//            holder.binding.readStatus.setImageResource(R.drawable.ic_double_check)
+//            holder.binding.readStatus.setColorFilter(R.color.gray)
+//        }else if (userChatsList[position].status == SEEN) {
+//            holder.binding.readStatus.setImageResource(R.drawable.ic_double_check)
+//            holder.binding.readStatus.setColorFilter(R.color.blue)
+//        }
 
         holder.binding.root.setOnClickListener {
             onItemClick.invoke(userChatsList[position])

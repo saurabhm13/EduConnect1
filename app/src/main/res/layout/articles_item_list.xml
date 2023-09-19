@@ -23,7 +23,6 @@
                 android:id="@+id/shapeableImageView"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@color/material_dynamic_secondary30"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
