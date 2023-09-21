@@ -3,6 +3,7 @@ package com.example.educonnect.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.educonnect.data.User
 import com.example.educonnect.data.UserChats
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -18,6 +19,7 @@ class MainViewModel(): ViewModel() {
     lateinit var databaseReference: DatabaseReference
 
     private var userChatLiveData = MutableLiveData<List<UserChats>>()
+    private var userDataLiveData = MutableLiveData<User>()
 
     private val userId = auth.currentUser?.uid
 
@@ -48,6 +50,28 @@ class MainViewModel(): ViewModel() {
 
     fun observeUserChatsLiveData(): LiveData<List<UserChats>> {
         return userChatLiveData
+    }
+
+    fun getUserData() {
+        if (userId != null) {
+            database.reference.child("users").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val userData = snapshot.getValue(User::class.java)!!
+                    userDataLiveData.value = userData
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+
+    }
+
+    fun observeUserData(): LiveData<User> {
+        return userDataLiveData
     }
 
 }

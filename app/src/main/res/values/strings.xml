@@ -35,4 +35,7 @@
     <string name="select_user">Select User</string>
     <string name="send">Send</string>
     <string name="articles">Articles</string>
+    <string name="image_picker">Image Picker</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

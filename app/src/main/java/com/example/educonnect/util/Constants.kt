@@ -10,6 +10,7 @@ class Constants {
         const val ID = "userId"
         const val NAME = "name"
         const val IMAGE = "image"
+        const val EMAIL = "email"
         const val LASTMESSAGE = "lastMessage"
         const val TIMESTAMP = "timeStamp"
         const val STATUS = "status"
