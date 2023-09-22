@@ -20,7 +20,7 @@
             android:layout_margin="15dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapeableImageView"
+                android:id="@+id/articleImage"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -29,21 +29,21 @@
                 app:shapeAppearanceOverlay="@style/FeatureImageShape" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/article_title"
                 style="@style/SecondaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="3dp"
-                android:lines="1"
+                android:maxLines="1"
                 android:text="@string/name"
-                app:layout_constraintBottom_toTopOf="@+id/userName"
-                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+                app:layout_constraintBottom_toTopOf="@+id/article_description"
+                app:layout_constraintStart_toEndOf="@+id/articleImage"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
-                android:id="@+id/userName"
+                android:id="@+id/article_description"
                 style="@style/TertiaryText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -53,8 +53,8 @@
                 android:text="@string/description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/name"
-                app:layout_constraintTop_toBottomOf="@+id/name" />
+                app:layout_constraintStart_toStartOf="@+id/article_title"
+                app:layout_constraintTop_toBottomOf="@+id/article_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

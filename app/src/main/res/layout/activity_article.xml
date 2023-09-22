@@ -10,13 +10,12 @@
         android:id="@+id/article_image"
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:src="@color/material_dynamic_secondary30"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/article_image" />
 
     <ImageView
-        android:id="@+id/back_video"
+        android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -28,7 +27,7 @@
         android:contentDescription="@string/back" />
 
     <TextView
-        android:id="@+id/title_article"
+        android:id="@+id/article_title"
         style="@style/SecondaryText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,12 +35,12 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:text="@string/title"
-        app:layout_constraintEnd_toStartOf="@+id/publishTime_video"
+        app:layout_constraintEnd_toStartOf="@+id/article_publishTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/article_image" />
 
     <TextView
-        android:id="@+id/description_video"
+        android:id="@+id/article_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/description"
@@ -50,11 +49,11 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintTop_toBottomOf="@id/title_article"
+        app:layout_constraintTop_toBottomOf="@id/article_title"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/publishTime_video"
+        android:id="@+id/article_publishTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="01-02-2023"

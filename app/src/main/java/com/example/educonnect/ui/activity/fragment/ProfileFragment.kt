@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
 
     lateinit var binding: FragmentProfileBinding
 
-    private var viewModel = MainViewModel()
+    private lateinit var viewModel: MainViewModel
 
     private lateinit var name: String
     private lateinit var image: String
@@ -43,7 +43,6 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-//        userData = viewModel.getUserData()!!
         viewModel.getUserData()
         viewModel.observeUserData().observe(viewLifecycleOwner) {
             name = it.name
@@ -56,7 +55,6 @@ class ProfileFragment : Fragment() {
 
             FirebaseAuth.getInstance().signOut()
 
-            // After signing out, navigate the user to the login screen or perform other actions as needed.
             val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
