@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.educonnect.data.Article
+import com.example.educonnect.data.FeaturedImage
 import com.example.educonnect.data.User
 import com.example.educonnect.data.UserChats
 import com.example.educonnect.data.Video
@@ -25,6 +26,7 @@ class MainViewModel() : ViewModel() {
     private var userChatLiveData = MutableLiveData<List<UserChats>>()
     private var userDataLiveData = MutableLiveData<User>()
 
+    private val featureImageLiveData = MutableLiveData<FeaturedImage>()
     private var articlesLiveData = MutableLiveData<List<Article>>()
     private var videosLiveData = MutableLiveData<List<Video>>()
 
@@ -84,7 +86,7 @@ class MainViewModel() : ViewModel() {
     }
 
     fun getArticles() {
-        firestore.collection("Android Development")
+        firestore.collection("articles")
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val articleList = mutableListOf<Article>()
@@ -108,5 +110,50 @@ class MainViewModel() : ViewModel() {
         return articlesLiveData
     }
 
+    fun getVideos() {
+        firestore.collection("videos")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val videoList = mutableListOf<Video>()
+                for (document in querySnapshot) {
+                    val title = document.getString("title") ?: ""
+                    val author = document.getString("author") ?: ""
+                    val publishTime = document.getString("publishTime") ?: ""
+                    val description = document.getString("description") ?: ""
+                    val imageLink = document.getString("imageLink") ?: ""
+                    val videoLink = document.getString("videoLink")?: ""
+                    val video = Video(title, description, publishTime, author, imageLink, videoLink)
+                    videoList.add(video)
+                }
+                videosLiveData.value = videoList
+            }
+            .addOnFailureListener { exception ->
+                // Handle the failure to retrieve data
+            }
+    }
+
+    fun observeVideosLiveData(): LiveData<List<Video>> {
+        return videosLiveData
+    }
+
+    fun getFeaturedImage() {
+        database.reference.child("featuredImages")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val featuredImage = snapshot.getValue(FeaturedImage::class.java)!!
+                    featureImageLiveData.value = featuredImage
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+    fun observeFeaturedImageLiveData(): LiveData<FeaturedImage> {
+        return featureImageLiveData
+    }
 
 }

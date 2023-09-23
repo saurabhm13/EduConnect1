@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.example.educonnect.R
 import com.example.educonnect.databinding.ActivityArticleBinding
+import com.example.educonnect.util.Constants.Companion.ARTICLE_IMAGE
 import com.example.educonnect.util.Constants.Companion.AUTHOR
 import com.example.educonnect.util.Constants.Companion.DESCRIPTION
 import com.example.educonnect.util.Constants.Companion.IMAGE
@@ -28,6 +29,10 @@ class ArticleActivity : AppCompatActivity() {
 
         setIncomingData()
 
+        binding.back.setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun setIncomingData() {
@@ -35,7 +40,7 @@ class ArticleActivity : AppCompatActivity() {
         description = intent.getStringExtra(DESCRIPTION).toString()
         publishTime = intent.getStringExtra(PUBLISH_TIME).toString()
         author = intent.getStringExtra(AUTHOR).toString()
-        imageLink = intent.getStringExtra(IMAGE).toString()
+        imageLink = intent.getStringExtra(ARTICLE_IMAGE).toString()
 
 
         binding.articleTitle.text = title

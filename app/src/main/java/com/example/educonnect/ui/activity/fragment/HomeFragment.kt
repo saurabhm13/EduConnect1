@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.educonnect.R
 import com.example.educonnect.databinding.FragmentHomeBinding
 import com.example.educonnect.ui.activity.ArticleActivity
 import com.example.educonnect.ui.activity.MainActivity
+import com.example.educonnect.ui.activity.VideoActivity
 import com.example.educonnect.ui.adapter.ArticlesAdapter
 import com.example.educonnect.ui.adapter.VideoAdapter
 import com.example.educonnect.ui.viewmodel.MainViewModel
@@ -48,6 +50,13 @@ class HomeFragment : Fragment() {
 
         binding.chipGroupList.setOnCheckedChangeListener {group, checkedId ->
             prepareArticlesRecyclerView(checkedId)
+        }
+
+        viewModel.getFeaturedImage()
+        viewModel.observeFeaturedImageLiveData().observe(viewLifecycleOwner) {
+            Glide.with(this)
+                .load(it.image)
+                .into(binding.featuredImage)
         }
 
 //        binding.chipGroupList.setOnCheckedStateChangeListener {group, checkedId ->
@@ -88,16 +97,16 @@ class HomeFragment : Fragment() {
             }
             R.id.chip_videos -> {
 
-//                binding.rvArticles.visibility = View.GONE
-//                binding.rvVideos.visibility = View.VISIBLE
-//
-//                viewModel.getVideos()
-//                viewModel.observeVideosLiveData().observe(viewLifecycleOwner) {
-//                    videoAdapter.setVideoList(it)
-//                }
+                binding.rvArticles.visibility = View.GONE
+                binding.rvVideos.visibility = View.VISIBLE
+
+                viewModel.getVideos()
+                viewModel.observeVideosLiveData().observe(viewLifecycleOwner) {
+                    videoAdapter.setVideoList(it)
+                }
 
                 videoAdapter = VideoAdapter {
-                    val intoVideoDetail = Intent(activity, ArticleActivity::class.java)
+                    val intoVideoDetail = Intent(activity, VideoActivity::class.java)
                     intoVideoDetail.putExtra(TITLE, it.title)
                     intoVideoDetail.putExtra(DESCRIPTION, it.description)
                     intoVideoDetail.putExtra(AUTHOR, it.author)

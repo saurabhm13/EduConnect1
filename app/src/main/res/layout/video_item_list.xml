@@ -23,6 +23,7 @@
                 android:id="@+id/video_img"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/FeatureImageShape" />
