@@ -1,13 +1,21 @@
 package com.example.educonnect.ui.viewmodel
 
+import android.app.Application
+import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat.recreate
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.educonnect.ThemeManager
 import com.example.educonnect.data.Article
 import com.example.educonnect.data.FeaturedImage
 import com.example.educonnect.data.User
 import com.example.educonnect.data.UserChats
 import com.example.educonnect.data.Video
+import com.example.educonnect.util.Constants.Companion.THEME_DARK
+import com.example.educonnect.util.Constants.Companion.THEME_LIGHT
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,7 +24,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MainViewModel() : ViewModel() {
+class MainViewModel(
+    application: Application
+) : AndroidViewModel(application) {
 
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance()
@@ -31,6 +41,20 @@ class MainViewModel() : ViewModel() {
     private var videosLiveData = MutableLiveData<List<Video>>()
 
     private val userId = auth.currentUser?.uid
+
+    private val themePreferenceLiveData = MutableLiveData<String>()
+    private val themeChangedLiveData = MutableLiveData<Boolean>()
+
+    var isThemeChangePending = false
+
+    val themeChanged: LiveData<Boolean>
+        get() = themeChangedLiveData
+
+    init {
+        val savedTheme = getThemePreference()
+        themePreferenceLiveData.value = savedTheme
+        ThemeManager.applyTheme(savedTheme)
+    }
 
     fun getUserChat() {
         databaseReference =
@@ -154,6 +178,23 @@ class MainViewModel() : ViewModel() {
 
     fun observeFeaturedImageLiveData(): LiveData<FeaturedImage> {
         return featureImageLiveData
+    }
+
+    fun toggleTheme() {
+        val currentTheme = themePreferenceLiveData.value
+        val newTheme = when (currentTheme) {
+            THEME_LIGHT -> THEME_DARK
+            THEME_DARK -> THEME_LIGHT
+            else -> THEME_LIGHT
+        }
+        themePreferenceLiveData.value = newTheme
+        isThemeChangePending = true
+        ThemeManager.saveThemePreference(getApplication(), newTheme)
+        ThemeManager.applyTheme(newTheme)
+    }
+
+    private fun getThemePreference(): String {
+        return ThemeManager.getThemePreference(getApplication())
     }
 
 }

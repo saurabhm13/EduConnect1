@@ -1,15 +1,20 @@
 package com.example.educonnect.ui.activity.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.educonnect.R
+import com.example.educonnect.ThemeManager
+import com.example.educonnect.ThemeManager.getThemePreference
 import com.example.educonnect.data.User
 import com.example.educonnect.databinding.FragmentProfileBinding
 import com.example.educonnect.ui.activity.EditProfileActivity
@@ -19,6 +24,9 @@ import com.example.educonnect.ui.viewmodel.MainViewModel
 import com.example.educonnect.util.Constants.Companion.EMAIL
 import com.example.educonnect.util.Constants.Companion.IMAGE
 import com.example.educonnect.util.Constants.Companion.NAME
+import com.example.educonnect.util.Constants.Companion.THEME_DARK
+import com.example.educonnect.util.Constants.Companion.THEME_LIGHT
+import com.example.educonnect.util.Constants.Companion.THEME_PREFERENCE
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
@@ -68,6 +76,33 @@ class ProfileFragment : Fragment() {
             startActivity(intoEditProfile)
         }
 
+        val savedTheme = context?.let { getThemePreference(it) }
+
+        when (savedTheme) {
+            THEME_LIGHT -> {
+                binding.switchDarkMode.isChecked = false
+            }
+            THEME_DARK -> {
+                binding.switchDarkMode.isChecked = true
+            }
+        }
+
+
+        viewModel.themeChanged.observe(viewLifecycleOwner) { themeChanged ->
+            if (themeChanged) {
+                activity?.recreate() // Recreate the activity to apply the new theme
+            }
+        }
+
+        binding.switchDarkMode.setOnClickListener {
+            toggleTheme()
+        }
+
+        binding.llDarkMode.setOnClickListener {
+            binding.switchDarkMode.toggle()
+            toggleTheme()
+        }
+
         return (binding.root)
     }
 
@@ -84,6 +119,10 @@ class ProfileFragment : Fragment() {
                 .into(binding.profileImageProfile)
         }
 
+    }
+
+    private fun toggleTheme() {
+        viewModel.toggleTheme()
     }
 
     override fun onResume() {

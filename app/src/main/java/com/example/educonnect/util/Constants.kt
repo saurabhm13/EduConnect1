@@ -21,6 +21,10 @@ class Constants {
         const val AUTHOR = "author"
         const val ARTICLE_IMAGE = "articleImage"
         const val VIDEO_LINK = "videoLink"
+
+        const val THEME_PREFERENCE = "theme_preference"
+        const val THEME_LIGHT = "light"
+        const val THEME_DARK = "dark"
     }
 
 }
