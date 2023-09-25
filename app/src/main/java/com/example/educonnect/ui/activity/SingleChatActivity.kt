@@ -51,6 +51,8 @@ class SingleChatActivity : AppCompatActivity() {
             messageAdapter.setMessage(it)
         }
 
+        viewModel.setSenderToken()
+
     }
 
     private fun prepareRecyclerView() {

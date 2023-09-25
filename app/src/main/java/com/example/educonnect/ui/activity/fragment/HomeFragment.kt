@@ -12,13 +12,18 @@ import com.example.educonnect.R
 import com.example.educonnect.databinding.FragmentHomeBinding
 import com.example.educonnect.ui.activity.ArticleActivity
 import com.example.educonnect.ui.activity.MainActivity
+import com.example.educonnect.ui.activity.SingleChatActivity
 import com.example.educonnect.ui.activity.VideoActivity
 import com.example.educonnect.ui.adapter.ArticlesAdapter
 import com.example.educonnect.ui.adapter.VideoAdapter
 import com.example.educonnect.ui.viewmodel.MainViewModel
+import com.example.educonnect.util.Constants
 import com.example.educonnect.util.Constants.Companion.ARTICLE_IMAGE
 import com.example.educonnect.util.Constants.Companion.AUTHOR
 import com.example.educonnect.util.Constants.Companion.DESCRIPTION
+import com.example.educonnect.util.Constants.Companion.ID
+import com.example.educonnect.util.Constants.Companion.IMAGE
+import com.example.educonnect.util.Constants.Companion.NAME
 import com.example.educonnect.util.Constants.Companion.PUBLISH_TIME
 import com.example.educonnect.util.Constants.Companion.TITLE
 import com.example.educonnect.util.Constants.Companion.VIDEO_LINK
@@ -29,6 +34,8 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: MainViewModel
     lateinit var articlesAdapter: ArticlesAdapter
     lateinit var videoAdapter: VideoAdapter
+
+    var id: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +48,21 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+
+//         If user comes from notification
+
+        if (activity?.intent?.getStringExtra("openChatFragment") != null) {
+            val userId = activity?.intent?.getStringExtra(ID)
+            val name = activity?.intent?.getStringExtra(NAME)
+            val image = activity?.intent?.getStringExtra(IMAGE)
+
+            val intoSingleChat = Intent(activity, SingleChatActivity::class.java)
+            intoSingleChat.putExtra(ID, userId)
+            intoSingleChat.putExtra(NAME, name)
+            intoSingleChat.putExtra(IMAGE, image)
+            intoSingleChat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intoSingleChat)
+        }
 
         viewModel.getArticles()
         prepareArticlesRecyclerView(R.id.chip_articles)

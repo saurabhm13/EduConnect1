@@ -1,18 +1,32 @@
 package com.example.educonnect.ui.viewmodel
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.educonnect.data.Message
+import com.example.educonnect.data.NotificationData
+import com.example.educonnect.data.PushNotification
 import com.example.educonnect.data.UserChats
+import com.example.educonnect.remote.RetrofitInstance
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
+
+const val TOPIC = "/topics/myTopic"
 
 class SingleChatViewModel(): ViewModel() {
 
@@ -26,11 +40,15 @@ class SingleChatViewModel(): ViewModel() {
     private var senderImage: String? = null
     private lateinit var senderName: String
 
+    private lateinit var token: String
+
     init {
         getSenderData()
     }
 
     fun sendMessage(message: String, receiverId: String, receiverName: String, receiverImage: String) {
+
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         val senderRoom = senderId+receiverId
         val receiverRoom = receiverId+senderId
@@ -40,13 +58,26 @@ class SingleChatViewModel(): ViewModel() {
         val receiverSideMessageUpdate =
             senderId?.let { UserChats(it, senderName, senderImage, getDate(), message) }
 
-        database.child("chats").child(senderRoom).push().setValue(sendMessageData)
-        database.child("chats").child(receiverRoom).push().setValue(sendMessageData)
+        database.child("chats").child(senderRoom).push().setValue(sendMessageData).addOnSuccessListener {
+            database.child("chats").child(receiverRoom).push().setValue(sendMessageData)
 
-        if (senderId != null) {
-            database.child("users").child(senderId).child("chats").child(receiverId).setValue(senderSideMessageUpdate)
-            database.child("users").child(receiverId).child("chats").child(senderId).setValue(receiverSideMessageUpdate)
+            if (senderId != null) {
+                database.child("users").child(senderId).child("chats").child(receiverId).setValue(senderSideMessageUpdate)
+                database.child("users").child(receiverId).child("chats").child(senderId).setValue(receiverSideMessageUpdate)
+            }
+
+            if (senderId != null) {
+                PushNotification(
+                    NotificationData(senderName, message, senderId, receiverName, receiverImage),
+                    token // TODO add receiver token
+                ).also {
+                    sendNotification(it)
+                }
+            }
+
+
         }
+
 
     }
 
@@ -97,6 +128,35 @@ class SingleChatViewModel(): ViewModel() {
                 }
 
             })
+        }
+    }
+
+    fun setSenderToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("Single Chat", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            token = task.result
+//            if (senderId != null) {
+//                database.child("users").child(senderId).setValue("token", token)
+//            }
+            Log.d("Single Chat", "Token: $token")
+
+        })
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if (response.isSuccessful) {
+//                Log.d("Chat", "Response: ${Gson().toJson(response)}")
+            }else {
+//                Log.d("Chat", response.errorBody().toString())
+            }
+        }catch (e: Exception) {
+//            Log.e("Chat", e.toString())
         }
     }
 
