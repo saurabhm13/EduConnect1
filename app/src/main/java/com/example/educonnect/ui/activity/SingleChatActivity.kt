@@ -51,7 +51,6 @@ class SingleChatActivity : AppCompatActivity() {
             messageAdapter.setMessage(it)
         }
 
-        viewModel.setSenderToken()
 
     }
 

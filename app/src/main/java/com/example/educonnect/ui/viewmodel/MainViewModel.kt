@@ -1,9 +1,13 @@
 package com.example.educonnect.ui.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat.recreate
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,8 +18,10 @@ import com.example.educonnect.data.FeaturedImage
 import com.example.educonnect.data.User
 import com.example.educonnect.data.UserChats
 import com.example.educonnect.data.Video
+import com.example.educonnect.ui.activity.LoginActivity
 import com.example.educonnect.util.Constants.Companion.THEME_DARK
 import com.example.educonnect.util.Constants.Companion.THEME_LIGHT
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,6 +29,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainViewModel(
     application: Application
@@ -178,6 +185,13 @@ class MainViewModel(
 
     fun observeFeaturedImageLiveData(): LiveData<FeaturedImage> {
         return featureImageLiveData
+    }
+
+    fun logout() {
+        if (userId != null) {
+            database.reference.child("users").child(userId).child("token").setValue("null")
+        }
+        FirebaseAuth.getInstance().signOut()
     }
 
     fun toggleTheme() {

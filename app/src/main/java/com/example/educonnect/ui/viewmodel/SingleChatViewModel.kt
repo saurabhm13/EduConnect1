@@ -17,16 +17,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
-
-const val TOPIC = "/topics/myTopic"
 
 class SingleChatViewModel(): ViewModel() {
 
@@ -40,7 +35,8 @@ class SingleChatViewModel(): ViewModel() {
     private var senderImage: String? = null
     private lateinit var senderName: String
 
-    private lateinit var token: String
+    private lateinit var senderToken: String
+    private lateinit var receiverToken: String
 
     init {
         getSenderData()
@@ -48,7 +44,7 @@ class SingleChatViewModel(): ViewModel() {
 
     fun sendMessage(message: String, receiverId: String, receiverName: String, receiverImage: String) {
 
-        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+        getReceiverToken(receiverId)
 
         val senderRoom = senderId+receiverId
         val receiverRoom = receiverId+senderId
@@ -66,10 +62,10 @@ class SingleChatViewModel(): ViewModel() {
                 database.child("users").child(receiverId).child("chats").child(senderId).setValue(receiverSideMessageUpdate)
             }
 
-            if (senderId != null) {
+            if (senderId != null && receiverToken != "null") {
                 PushNotification(
                     NotificationData(senderName, message, senderId, receiverName, receiverImage),
-                    token // TODO add receiver token
+                    receiverToken
                 ).also {
                     sendNotification(it)
                 }
@@ -131,18 +127,19 @@ class SingleChatViewModel(): ViewModel() {
         }
     }
 
-    fun setSenderToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("Single Chat", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
+    private fun getReceiverToken(receiverId: String) {
+        database.child("users").child(receiverId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                receiverToken = if (snapshot.hasChild("token")) {
+                    snapshot.child("token").value as String
+                }else {
+                    "null"
+                }
             }
 
-            token = task.result
-//            if (senderId != null) {
-//                database.child("users").child(senderId).setValue("token", token)
-//            }
-            Log.d("Single Chat", "Token: $token")
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
 
         })
     }
