@@ -18,4 +18,6 @@
     <color name="home_color">#F1A5A5</color>
     <color name="chat_color">#87EAC7</color>
     <color name="Profile_color">#C388F8</color>
+
+    <color name="textColor"></color>
 </resources>

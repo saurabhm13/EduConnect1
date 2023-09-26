@@ -3,6 +3,7 @@ package com.example.educonnect.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.educonnect.databinding.ActivityLoginBinding
@@ -46,20 +47,36 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
+
+            binding.progressBar.visibility = View.VISIBLE
+
             email = binding.emailLogin.editText?.text.toString()
             password = binding.passwordLogin.editText?.text.toString()
 
+            if (email.isNullOrEmpty()) {
+                Toast.makeText(this, "Enter Valid Email", Toast.LENGTH_LONG).show()
+                binding.progressBar.visibility = View.GONE
+            }else if (password.isNullOrEmpty()) {
+                Toast.makeText(this, "Enter Valid Password", Toast.LENGTH_LONG).show()
+                binding.progressBar.visibility = View.GONE
+            }
 
-
-            if (!email.isNullOrEmpty() || !password.isNullOrEmpty()) {
+            if (!email.isNullOrEmpty() && !password.isNullOrEmpty()) {
 
                 viewModel.loginUser(email!!, password!!)
-                viewModel.authCallback = {
-                    val intoMain = Intent(this, MainActivity::class.java)
-                    startActivity(intoMain)
-                    finish()
-                }
-                Toast.makeText(this, "Login", Toast.LENGTH_SHORT).show()
+            }
+
+            viewModel.authCallback = {
+                val intoMain = Intent(this, MainActivity::class.java)
+                startActivity(intoMain)
+                finish()
+                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
+            }
+
+            viewModel.errorCallback = {
+                Toast.makeText(this, "Invalid User", Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
             }
         }
 
