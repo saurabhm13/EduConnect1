@@ -86,15 +86,6 @@
                         android:textAppearance="@style/TertiaryText"
                         android:textAlignment="center" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_studyMaterials"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TertiaryText"
-                        android:text="@string/study_materials"
-                        android:textAlignment="center" />
-
 
                 </com.google.android.material.chip.ChipGroup>
 

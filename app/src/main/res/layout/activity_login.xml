@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.LoginActivity">
 
+    <TextView
+        style="@style/PrimaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/login"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_login"
@@ -60,17 +70,6 @@
         android:text="@string/login"
         app:layout_constraintTop_toBottomOf="@id/password_login" />
 
-    <TextView
-        android:id="@+id/txt_forgotPassword"
-        style="@style/SecondaryText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/forgot_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login" />
 
     <TextView
         android:id="@+id/txt_dontHaveAccount"
@@ -82,7 +81,7 @@
         android:text="@string/don_t_have_an_account"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_forgotPassword" />
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
 
     <TextView
         android:id="@+id/txt_createAccount_login"
@@ -93,31 +92,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/create_account"
         app:layout_constraintStart_toEndOf="@id/txt_dontHaveAccount"
-        app:layout_constraintTop_toBottomOf="@id/txt_forgotPassword" />
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/google_login_cv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        app:cardCornerRadius="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/phone_login_cv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_dontHaveAccount">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_google"
-            android:contentDescription="@string/google_login" />
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/phone_login_cv"
@@ -129,7 +104,7 @@
         android:layout_marginStart="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/google_login_cv"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_dontHaveAccount">
 
         <ImageView
@@ -137,7 +112,8 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:src="@drawable/ic_phone"
-            android:contentDescription="@string/mobile_login" />
+            android:contentDescription="@string/mobile_login"
+            app:tint="#2196F3" />
 
     </androidx.cardview.widget.CardView>
 

@@ -41,4 +41,6 @@
     <string name="thumb">Thumb</string>
     <string name="next">Next</string>
     <string name="verify">Verify</string>
+    <string name="add_your_details">Add your details</string>
+    <string name="login_by_phone_number">Login By Phone Number</string>
 </resources>

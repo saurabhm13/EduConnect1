@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.SignupActivity">
 
+    <TextView
+        style="@style/PrimaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/signup"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_signup"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
