@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.viewModels
 import androidx.core.net.toUri
@@ -40,15 +41,16 @@ class EditProfileActivity : AppCompatActivity() {
         if (result.isSuccessful) {
             // Use the cropped image URI.
             croppedImageUri = result.uriContent!!
-            val croppedImageFilePath = result.getUriFilePath(this) // optional usage
+
             Glide.with(this)
                 .load(croppedImageUri)
                 .into(binding.profileImage)
-            // Process the cropped image URI as needed.
         } else {
             // An error occurred.
             val exception = result.error
-            // Handle the error.
+            if (exception != null) {
+                Toast.makeText(this, "Error: ${exception.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -88,6 +90,10 @@ class EditProfileActivity : AppCompatActivity() {
             finish()
         }
 
+        viewModel.errorCallback = {
+            Toast.makeText(this, "Error Occurred", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     private fun setIncomingData() {
@@ -99,6 +105,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding.editEmail.editText?.setText(email)
 
         if (image.isEmpty() || image == "null") {
+            // Load a default profile image or placeholder.
             Glide.with(this)
                 .load(R.drawable.profile_place_holder)
                 .into(binding.profileImage)
@@ -108,22 +115,6 @@ class EditProfileActivity : AppCompatActivity() {
                 .into(binding.profileImage)
         }
     }
-
-//    private fun observeProfileImage() {
-//        viewModel.selectedImageUri.observe(this) {
-//            if (it != null) {
-//                binding.profileImage.setImageURI(it)
-//            }
-//        }
-//    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == 123 && resultCode == RESULT_OK) {
-//            selectedImageUri = data?.data
-//            viewModel.onImagePicked(selectedImageUri)
-//        }
-//    }
 
     private fun startCrop() {
         cropImage.launch(

@@ -49,7 +49,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         }
 
-//        val intoSingleChat = Intent(this, SingleChatActivity::class.java)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = Random.nextInt()
 
@@ -79,17 +78,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         Log.d("New Token", "Refreshed token: $token")
-    }
-
-    private fun openChatActivity(userId: String?, name: String?, image: String?) {
-        if (!userId.isNullOrEmpty()) {
-            val intent = Intent(applicationContext, SingleChatActivity::class.java)
-            intent.putExtra(ID, userId)
-            intent.putExtra(NAME, name)
-            intent.putExtra(IMAGE, image)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

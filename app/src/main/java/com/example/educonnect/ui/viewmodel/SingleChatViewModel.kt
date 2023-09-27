@@ -38,12 +38,16 @@ class SingleChatViewModel(): ViewModel() {
     private lateinit var senderToken: String
     private lateinit var receiverToken: String
 
+    private val _errorLiveData = MutableLiveData<String>()
+    val observeError: LiveData<String> get() = _errorLiveData
+
     init {
         getSenderData()
     }
 
     fun sendMessage(message: String, receiverId: String, receiverName: String, receiverImage: String) {
 
+        // Getting receiver token
         getReceiverToken(receiverId)
 
         val senderRoom = senderId+receiverId
@@ -54,6 +58,7 @@ class SingleChatViewModel(): ViewModel() {
         val receiverSideMessageUpdate =
             senderId?.let { UserChats(it, senderName, senderImage, getDate(), message) }
 
+        // Adding message to realtime database
         database.child("chats").child(senderRoom).push().setValue(sendMessageData).addOnSuccessListener {
             database.child("chats").child(receiverRoom).push().setValue(sendMessageData)
 
@@ -62,6 +67,7 @@ class SingleChatViewModel(): ViewModel() {
                 database.child("users").child(receiverId).child("chats").child(senderId).setValue(receiverSideMessageUpdate)
             }
 
+            // Push Notification
             if (senderId != null && receiverToken != "null") {
                 PushNotification(
                     NotificationData(senderName, message, senderId, receiverName, receiverImage),
@@ -95,7 +101,7 @@ class SingleChatViewModel(): ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                _errorLiveData.value = error.toString()
             }
 
         })
@@ -120,7 +126,7 @@ class SingleChatViewModel(): ViewModel() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    _errorLiveData.value = error.toString()
                 }
 
             })
@@ -138,7 +144,7 @@ class SingleChatViewModel(): ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                _errorLiveData.value = error.toString()
             }
 
         })
@@ -154,6 +160,7 @@ class SingleChatViewModel(): ViewModel() {
             }
         }catch (e: Exception) {
 //            Log.e("Chat", e.toString())
+            _errorLiveData.value = e.toString()
         }
     }
 

@@ -22,6 +22,9 @@ class AllUserViewModel(): ViewModel() {
     private val currentUser = auth.currentUser?.uid
     val userChatList = mutableListOf<UserChats>()
 
+    private val _errorLiveData = MutableLiveData<String>()
+    val observeError: LiveData<String> get() = _errorLiveData
+
     init {
         getChattingUsers()
         getAllUser()
@@ -49,7 +52,7 @@ class AllUserViewModel(): ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                _errorLiveData.value = error.toString()
             }
 
         })
@@ -71,11 +74,10 @@ class AllUserViewModel(): ViewModel() {
                         }
                     }
 
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    _errorLiveData.value = error.toString()
                 }
 
             })

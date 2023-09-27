@@ -65,6 +65,11 @@ class SignupActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                 }
             }
+
+            viewModel.verificationError.observe(this) {
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                binding.progressBar.visibility = View.GONE
+            }
         }
     }
 }

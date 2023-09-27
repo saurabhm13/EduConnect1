@@ -2,6 +2,7 @@ package com.example.educonnect.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -35,6 +36,7 @@ class SingleChatActivity : AppCompatActivity() {
             finish()
         }
 
+        // Send Message
         binding.btnSend.setOnClickListener {
 
             val message = binding.editMessage.text.toString().trim()
@@ -45,12 +47,17 @@ class SingleChatActivity : AppCompatActivity() {
             }
         }
 
+        // Get all recent messages and display in recycler view
         viewModel.getMessage(receiverId)
         prepareRecyclerView()
         viewModel.observeMessageLiveData().observe(this) {
             messageAdapter.setMessage(it)
         }
 
+        // Observe error
+        viewModel.observeError.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
 
     }
 

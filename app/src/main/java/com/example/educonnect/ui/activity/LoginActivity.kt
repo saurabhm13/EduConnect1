@@ -37,10 +37,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intoSignup)
         }
 
-        binding.googleLoginCv.setOnClickListener {
-
-        }
-
         binding.phoneLoginCv.setOnClickListener {
             val intoMobileLogin = Intent(this, MobileLoginActivity::class.java)
             startActivity(intoMobileLogin)

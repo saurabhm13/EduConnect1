@@ -3,6 +3,7 @@ package com.example.educonnect.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.educonnect.databinding.ActivityAllUserBinding
@@ -25,6 +26,7 @@ class AllUserActivity : AppCompatActivity() {
         binding = ActivityAllUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Fetch and display all registered users
         prepareRecyclerView()
         viewModel.observeAllUserLiveData().observe(this) {
             allUserAdapter.setUserChats(it)
@@ -32,6 +34,11 @@ class AllUserActivity : AppCompatActivity() {
 
         binding.back.setOnClickListener {
             finish()
+        }
+
+        // Observe Error
+        viewModel.observeError.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
         }
 
     }

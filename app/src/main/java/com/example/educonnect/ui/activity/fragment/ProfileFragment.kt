@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.compose.material3.TopAppBar
 import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -51,6 +53,7 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        // Fetching User data
         viewModel.getUserData()
         viewModel.observeUserData().observe(viewLifecycleOwner) {
             name = it.name
@@ -59,6 +62,7 @@ class ProfileFragment : Fragment() {
             addFields()
         }
 
+        // User logout
         binding.logout.setOnClickListener {
 
             viewModel.logout()
@@ -68,6 +72,7 @@ class ProfileFragment : Fragment() {
             requireActivity().finish()
         }
 
+        // Edit Profile
         binding.profileLayout.setOnClickListener {
             val intoEditProfile = Intent(activity, EditProfileActivity::class.java)
             intoEditProfile.putExtra(NAME, name)
@@ -76,6 +81,7 @@ class ProfileFragment : Fragment() {
             startActivity(intoEditProfile)
         }
 
+        // Checking saved theme to toggle switch
         val savedTheme = context?.let { getThemePreference(it) }
 
         when (savedTheme) {
@@ -87,13 +93,19 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
+        // Observing theme change
         viewModel.themeChanged.observe(viewLifecycleOwner) { themeChanged ->
             if (themeChanged) {
                 activity?.recreate() // Recreate the activity to apply the new theme
             }
         }
 
+        // Observe Error
+        viewModel.observeError.observe(viewLifecycleOwner) {
+            Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+        }
+
+        // Theme switch
         binding.switchDarkMode.setOnClickListener {
             toggleTheme()
         }
@@ -125,8 +137,4 @@ class ProfileFragment : Fragment() {
         viewModel.toggleTheme()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getUserData()
-    }
 }

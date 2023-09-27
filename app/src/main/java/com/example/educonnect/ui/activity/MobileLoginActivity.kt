@@ -30,7 +30,7 @@ class MobileLoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-    private var verificationId: String? = null
+    private val viewModel: LoginSignupViewModel by viewModels()
 
     private var countryCode: String? = null
     private var phoneNo: String? = null
@@ -44,9 +44,8 @@ class MobileLoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
-//        setUpCallback()
 
-        binding.txtHaveAnAccountMobileLogin.setOnClickListener {
+        binding.txtLoginMobleLogin.setOnClickListener {
             val intoLogin = Intent(this, LoginActivity::class.java)
             startActivity(intoLogin)
         }
@@ -59,10 +58,10 @@ class MobileLoginActivity : AppCompatActivity() {
 
             if (!phoneNo.isNullOrEmpty()) {
                 if (otpSend) {
-                    verifyCode(otp!!)
+                    viewModel.verifyCode(otp!!)
                 }else {
                     otpSend = true
-                    sendVerificationCode("+$countryCode$phoneNo")
+                    viewModel.sendVerificationCode(phoneNo!!, "+$countryCode", this)
                     binding.otp.visibility = View.VISIBLE
                     binding.btnPhoneLogin.text = "SignUp"
                 }
@@ -70,64 +69,16 @@ class MobileLoginActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun sendVerificationCode(phoneNo: String) {
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNo)
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(this)
-            .setCallbacks(mCallBack)
-            .build()
-
-        PhoneAuthProvider.verifyPhoneNumber(options)
-    }
-
-    private fun verifyCode(otp: String) {
-        val credential = verificationId?.let { PhoneAuthProvider.getCredential(it, otp) }
-
-        if (credential != null) {
-            signInWithCredential(credential)
-        }
-    }
-
-    // callback method is called on Phone auth provider.
-    private val mCallBack: OnVerificationStateChangedCallbacks =
-        object : OnVerificationStateChangedCallbacks() {
-            override fun onCodeSent(s: String, forceResendingToken: ForceResendingToken) {
-                super.onCodeSent(s, forceResendingToken)
-                verificationId = s
-            }
-
-            override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
-                val code = phoneAuthCredential.smsCode
-
-                if (code != null) {
-                    binding.otp.editText?.setText(code)
-
-                    verifyCode(code)
-                }
-            }
-
-            override fun onVerificationFailed(e: FirebaseException) {
-                Toast.makeText(this@MobileLoginActivity, e.message, Toast.LENGTH_LONG).show()
-                Log.d("Mobile Login", e.message.toString())
-            }
+        viewModel.verificationError.observe(this) { error ->
+            Toast.makeText(this, error, Toast.LENGTH_LONG).show()
         }
 
-    private fun signInWithCredential(credential: PhoneAuthCredential) {
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(OnCompleteListener<AuthResult?> { task ->
-                if (task.isSuccessful) {
+        viewModel.authCallback = {
+            val intoUserDetail = Intent(this, UserDetailActivity::class.java)
+            startActivity(intoUserDetail)
+            finish()
+        }
 
-                    val intoUserDetail = Intent(this, UserDetailActivity::class.java)
-                    startActivity(intoUserDetail)
-                    finish()
-
-                } else {
-                    Toast.makeText(this, task.exception!!.message, Toast.LENGTH_LONG).show()
-                }
-            })
     }
 
 }

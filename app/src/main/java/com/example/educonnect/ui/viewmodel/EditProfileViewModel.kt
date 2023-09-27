@@ -1,10 +1,6 @@
 package com.example.educonnect.ui.viewmodel
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.educonnect.data.User
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +15,7 @@ class EditProfileViewModel() : ViewModel(){
     private val storageReference = FirebaseStorage.getInstance().reference
 
     private val userId = auth.currentUser?.uid
-
+    var errorCallback: (() -> Unit)? = null
 
     fun saveUserData(name: String, image: Uri, email: String) {
 
@@ -33,17 +29,19 @@ class EditProfileViewModel() : ViewModel(){
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 // The 'uri' variable now contains the download URL of the uploaded image
                 val imageUrl = uri.toString()
-                // Call a function to save this URL to the Realtime Database
-//                saveImageUrlToDatabase(imageUrl)
+
                 if (userId != null) {
-                    val user = User(userId, name, email,image = imageUrl)
-                    databaseReference.child("users").child(userId).setValue(user)
+                    databaseReference.child("users").child(userId).child("name").setValue(name)
+                    databaseReference.child("users").child(userId).child("email").setValue(email)
+                    databaseReference.child("users").child(userId).child("image").setValue(imageUrl)
                 }
             }.addOnFailureListener { exception ->
                 // Handle the failure to get the download URL
+                errorCallback?.invoke()
             }
         }.addOnFailureListener { exception ->
             // Handle the failure to upload the image
+            errorCallback?.invoke()
         }
     }
 

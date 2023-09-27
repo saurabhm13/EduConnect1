@@ -52,6 +52,9 @@ class MainViewModel(
     private val themePreferenceLiveData = MutableLiveData<String>()
     private val themeChangedLiveData = MutableLiveData<Boolean>()
 
+    private val _errorLiveData = MutableLiveData<String>()
+    val observeError: LiveData<String> get() = _errorLiveData
+
     var isThemeChangePending = false
 
     val themeChanged: LiveData<Boolean>
@@ -63,6 +66,7 @@ class MainViewModel(
         ThemeManager.applyTheme(savedTheme)
     }
 
+    // Chat Fragment
     fun getUserChat() {
         databaseReference =
             userId?.let { database.getReference("users").child(it).child("chats") }!!
@@ -83,7 +87,7 @@ class MainViewModel(
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                _errorLiveData.value = error.toString()
             }
 
         })
@@ -93,10 +97,11 @@ class MainViewModel(
         return userChatLiveData
     }
 
+    // Profile Fragment
     fun getUserData() {
         if (userId != null) {
             database.reference.child("users").child(userId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
                         val userData = snapshot.getValue(User::class.java)!!
@@ -104,7 +109,7 @@ class MainViewModel(
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                        _errorLiveData.value = error.toString()
                     }
 
                 })
@@ -116,6 +121,8 @@ class MainViewModel(
         return userDataLiveData
     }
 
+
+    // Home Fragment
     fun getArticles() {
         firestore.collection("articles")
             .get()
@@ -134,6 +141,7 @@ class MainViewModel(
             }
             .addOnFailureListener { exception ->
                 // Handle the failure to retrieve data
+                _errorLiveData.value = exception.toString()
             }
     }
 
@@ -141,6 +149,7 @@ class MainViewModel(
         return articlesLiveData
     }
 
+    // Home Fragment
     fun getVideos() {
         firestore.collection("videos")
             .get()
@@ -160,6 +169,7 @@ class MainViewModel(
             }
             .addOnFailureListener { exception ->
                 // Handle the failure to retrieve data
+                _errorLiveData.value = exception.toString()
             }
     }
 
@@ -167,6 +177,7 @@ class MainViewModel(
         return videosLiveData
     }
 
+    // Home Fragment
     fun getFeaturedImage() {
         database.reference.child("featuredImages")
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -177,7 +188,7 @@ class MainViewModel(
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    _errorLiveData.value = error.toString()
                 }
 
             })
@@ -187,6 +198,7 @@ class MainViewModel(
         return featureImageLiveData
     }
 
+    // Profile Fragment
     fun logout() {
         if (userId != null) {
             database.reference.child("users").child(userId).child("token").setValue("null")
@@ -194,6 +206,7 @@ class MainViewModel(
         FirebaseAuth.getInstance().signOut()
     }
 
+    // Profile Fragment
     fun toggleTheme() {
         val currentTheme = themePreferenceLiveData.value
         val newTheme = when (currentTheme) {

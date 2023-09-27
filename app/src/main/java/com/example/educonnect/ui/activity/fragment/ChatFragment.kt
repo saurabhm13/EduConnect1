@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -42,6 +43,7 @@ class ChatFragment : Fragment() {
         }
 
         prepareRecyclerView()
+        // Observe changes in the user chats and update the adapter.
         viewModel.observeUserChatsLiveData().observe(viewLifecycleOwner) {
             userChatAdapter.setUserChats(it)
         }
@@ -51,6 +53,7 @@ class ChatFragment : Fragment() {
 
     private fun prepareRecyclerView() {
 
+        // Retrieve user chat data from ViewModel.
         viewModel.getUserChat()
 
         userChatAdapter = UserChatAdapter {
@@ -64,6 +67,11 @@ class ChatFragment : Fragment() {
         binding.rvUserChat.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = userChatAdapter
+        }
+
+        // Observe Error
+        viewModel.observeError.observe(viewLifecycleOwner) {
+            Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
         }
     }
 

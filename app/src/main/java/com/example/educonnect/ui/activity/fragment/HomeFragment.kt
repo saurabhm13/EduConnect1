@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.educonnect.R
@@ -49,8 +50,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-//         If user comes from notification
-
+        // Check if the user came from a notification and open the appropriate chat.
         if (activity?.intent?.getStringExtra("openChatFragment") != null) {
             val userId = activity?.intent?.getStringExtra(ID)
             val name = activity?.intent?.getStringExtra(NAME)
@@ -64,6 +64,7 @@ class HomeFragment : Fragment() {
             startActivity(intoSingleChat)
         }
 
+        // Fetch articles data and prepare the articles RecyclerView.
         viewModel.getArticles()
         prepareArticlesRecyclerView(R.id.chip_articles)
         viewModel.observeArticlesLiveData().observe(viewLifecycleOwner) {
@@ -74,6 +75,7 @@ class HomeFragment : Fragment() {
             prepareArticlesRecyclerView(checkedId)
         }
 
+        // Fetch featured image data and display it.
         viewModel.getFeaturedImage()
         viewModel.observeFeaturedImageLiveData().observe(viewLifecycleOwner) {
             Glide.with(this)
@@ -81,9 +83,10 @@ class HomeFragment : Fragment() {
                 .into(binding.featuredImage)
         }
 
-//        binding.chipGroupList.setOnCheckedStateChangeListener {group, checkedId ->
-//            prepareArticlesRecyclerView(checkedId)
-//        }
+        // Observe Error
+        viewModel.observeError.observe(viewLifecycleOwner) {
+            Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+        }
 
         return binding.root
 
