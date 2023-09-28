@@ -25,6 +25,8 @@ class Constants {
         const val THEME_PREFERENCE = "theme_preference"
         const val THEME_LIGHT = "light"
         const val THEME_DARK = "dark"
+
+        const val NOTIFICATION_PREFERENCE = "notification_preference"
     }
 
 }

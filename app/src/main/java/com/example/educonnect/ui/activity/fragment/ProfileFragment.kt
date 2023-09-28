@@ -1,23 +1,15 @@
 package com.example.educonnect.ui.activity.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.compose.material3.TopAppBar
-import androidx.core.app.ActivityCompat.recreate
-import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.educonnect.R
-import com.example.educonnect.ThemeManager
-import com.example.educonnect.ThemeManager.getThemePreference
-import com.example.educonnect.data.User
+import com.example.educonnect.util.ThemeManager.getThemePreference
 import com.example.educonnect.databinding.FragmentProfileBinding
 import com.example.educonnect.ui.activity.EditProfileActivity
 import com.example.educonnect.ui.activity.LoginActivity
@@ -28,8 +20,8 @@ import com.example.educonnect.util.Constants.Companion.IMAGE
 import com.example.educonnect.util.Constants.Companion.NAME
 import com.example.educonnect.util.Constants.Companion.THEME_DARK
 import com.example.educonnect.util.Constants.Companion.THEME_LIGHT
-import com.example.educonnect.util.Constants.Companion.THEME_PREFERENCE
-import com.google.firebase.auth.FirebaseAuth
+import com.example.educonnect.util.NotificationSettings.getNotificationSetting
+import com.example.educonnect.util.NotificationSettings.setNotificationSetting
 
 class ProfileFragment : Fragment() {
 
@@ -113,6 +105,22 @@ class ProfileFragment : Fragment() {
         binding.llDarkMode.setOnClickListener {
             binding.switchDarkMode.toggle()
             toggleTheme()
+        }
+
+        // Check Notification switch
+
+        val savedNotificationSetting = context?.let { getNotificationSetting(it) }
+        binding.switchNotification.isChecked = savedNotificationSetting == true
+
+        binding.switchNotification.setOnCheckedChangeListener {_, isChecked ->
+            activity?.let { setNotificationSetting(isChecked, it) }
+        }
+
+        binding.llNotification.setOnClickListener {
+            binding.switchNotification.toggle()
+            activity?.let { it1 ->
+                setNotificationSetting(binding.switchNotification.isChecked, it1)
+            }
         }
 
         return (binding.root)

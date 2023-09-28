@@ -1,7 +1,6 @@
-package com.example.educonnect
+package com.example.educonnect.util
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.educonnect.util.Constants.Companion.THEME_DARK
 import com.example.educonnect.util.Constants.Companion.THEME_LIGHT

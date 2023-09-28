@@ -17,6 +17,7 @@ import com.example.educonnect.ui.activity.SingleChatActivity
 import com.example.educonnect.util.Constants.Companion.ID
 import com.example.educonnect.util.Constants.Companion.IMAGE
 import com.example.educonnect.util.Constants.Companion.NAME
+import com.example.educonnect.util.NotificationSettings
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.checkerframework.checker.nullness.qual.NonNull
@@ -35,44 +36,46 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
-        val data = remoteMessage.data
-        if (data.isNotEmpty()) {
-            userId = data["userId"]
-            name = data["name"]
-            image = data["image"]
+        if (NotificationSettings.getNotificationSetting(this)) {
+            val data = remoteMessage.data
+            if (data.isNotEmpty()) {
+                userId = data["userId"]
+                name = data["name"]
+                image = data["image"]
 
-            intoMain = Intent(this, MainActivity::class.java)
-            intoMain.putExtra("openChatFragment", "true")
-            intoMain.putExtra(ID, userId)
-            intoMain.putExtra(NAME, name)
-            intoMain.putExtra(IMAGE, image)
+                intoMain = Intent(this, MainActivity::class.java)
+                intoMain.putExtra("openChatFragment", "true")
+                intoMain.putExtra(ID, userId)
+                intoMain.putExtra(NAME, name)
+                intoMain.putExtra(IMAGE, image)
 
+            }
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationID = Random.nextInt()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel(notificationManager)
+            }
+
+            intoMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intoMain,
+                FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(remoteMessage.data["title"])
+                .setContentText(remoteMessage.data["message"])
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build()
+
+            notificationManager.notify(notificationID, notification)
         }
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notificationID = Random.nextInt()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(notificationManager)
-        }
-
-        intoMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            intoMain,
-            FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(remoteMessage.data["title"])
-            .setContentText(remoteMessage.data["message"])
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        notificationManager.notify(notificationID, notification)
 
     }
 
